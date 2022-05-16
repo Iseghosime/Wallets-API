@@ -1,0 +1,987 @@
+{
+	"info": {
+		"_postman_id": "51bdd5ff-c3dc-4e86-a6d3-64a21a055b0d",
+		"name": "NLE(Iseghosime) Wallets",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Self",
+			"item": [
+				{
+					"name": "Check balance NGN",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "95c08e79-f528-4148-81a4-8e7ba08be99c",
+								"exec": [
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"The get the Message\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.response.message).to.include(\"Balance Retrieved successfully\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Wallet balance\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.data.walletBalance).to.be.a(\"number\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Wallet currency\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.data.walletCurrency).to.eql(\"NGN\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"_postman_id": "04c1dd6a-e929-4d93-9f30-df3fe7581206",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "uvjqzm5xl6bw"
+							}
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Currency\": \"NGN\",\r\n    \"SecretKey\": \"hfucj5jatq8h\"\r\n}",
+							"options": {}
+						},
+						"url": "{{baseurl}}/self/balance"
+					},
+					"response": []
+				},
+				{
+					"name": "Check balance USD",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "95c08e79-f528-4148-81a4-8e7ba08be99c",
+								"exec": [
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"The get the Message\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.response.message).to.include(\"Balance Retrieved successfully\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Wallet balance\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.data.walletBalance).to.eql(0.00);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Wallet currency\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.data.walletCurrency).to.eql(\"USD\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"_postman_id": "69c84c6e-c950-46e8-8e1d-99acfaf829be",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "uvjqzm5xl6bw"
+							}
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Currency\": \"USD\",\r\n    \"SecretKey\": \"hfucj5jatq8h\"\r\n}",
+							"options": {}
+						},
+						"url": "{{baseurl}}/self/balance"
+					},
+					"response": []
+				},
+				{
+					"name": "Transactions",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Response time is less than 400ms\", () => {\r",
+									"  pm.expect(pm.response.responseTime).to.be.below(400);\r",
+									"});\r",
+									"pm.test(\"Response property matches currency\", function () {\r",
+									"  pm.expect(pm.response.json().name).to.eql(pm.environment.get(\"NGN\"));\r",
+									"});\r",
+									"pm.test(\"Response property matches Secret key\", function () {\r",
+									"  pm.expect(pm.response.json().name).to.eql(pm.environment.get(\"hfucj5jatq8h\"));\r",
+									"});\r",
+									"pm.test(\"Body includes amount\", function () {\r",
+									"  pm.expect(pm.response.text()).to.include(\"amount\");\r",
+									"});\r",
+									"pm.test(\"Body includes currency\", function () {\r",
+									"  pm.expect(pm.response.text()).to.include(\"currency\");\r",
+									"});\r",
+									"pm.test(\"Body includes category\", function () {\r",
+									"  pm.expect(pm.response.text()).to.include(\"category\");\r",
+									"});\r",
+									"pm.test(\"Body includes narration\", function () {\r",
+									"  pm.expect(pm.response.text()).to.include(\"narration\");\r",
+									"});\r",
+									"pm.test(\"Body includes date transacted\", function () {\r",
+									"  pm.expect(pm.response.text()).to.include(\"dateTransacted\");\r",
+									"});\r",
+									"pm.test(\"Body includes previous balance\", function () {\r",
+									"  pm.expect(pm.response.text()).to.include(\"previousBalance\");\r",
+									"});\r",
+									"pm.test(\"Body includes new balance\", function () {\r",
+									"  pm.expect(pm.response.text()).to.include(\"newBalance\");\r",
+									"});\r",
+									"pm.test(\"Body includes type\", function () {\r",
+									"  pm.expect(pm.response.text()).to.include(\"type\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"id": "2ef89835-23eb-44e3-b20f-61cd33345510"
+							}
+						}
+					],
+					"_postman_id": "6dbdc754-3479-453f-a5d8-cf3436fbbdf8",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "uvjqzm5xl6bw"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"skip\": 0,\r\n  \"take\": 10,\r\n  \"dateFrom\": \"2019-01-15\",\r\n  \"dateTo\": \"2021-01-15\",\r\n  \"transactionType\": 1,\r\n  \"secretKey\": \"hfucj5jatq8h\",\r\n  \"currency\": \"NGN\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseurl}}/self/transactions"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Sub-Wallets",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "d136a322-8377-493e-8f5b-2c0554f10ff3",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response property matches Secret Key\", function () {\r",
+									"  pm.expect(pm.response.json().name).to.eql(pm.environment.get(\"hfucj5jatq8h\"));\r",
+									"});\r",
+									"pm.test(\"Body includes data\", function () {\r",
+									"  pm.expect(pm.response.text()).to.include(\"data\");\r",
+									"});\r",
+									"pm.test(\"Body includes username\", function () {\r",
+									"  pm.expect(pm.response.text()).to.include(\"username\");\r",
+									"});\r",
+									"pm.test(\"Body includes account number\", function () {\r",
+									"  pm.expect(pm.response.text()).to.include(\"accountNumber\");\r",
+									"});\r",
+									"pm.test(\"Body includes Bank Verification Number\", function () {\r",
+									"  pm.expect(pm.response.text()).to.include(\"bvn\");\r",
+									"});\r",
+									"pm.test(\"Body includes city\", function () {\r",
+									"  pm.expect(pm.response.text()).to.include(\"city\");\r",
+									"});\r",
+									"pm.test(\"Body includes country\", function () {\r",
+									"  pm.expect(pm.response.text()).to.include(\"country\");\r",
+									"});\r",
+									"pm.test(\"Body includes date created\", function () {\r",
+									"  pm.expect(pm.response.text()).to.include(\"dateCreated\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body includes email\", function () {\r",
+									"  pm.expect(pm.response.text()).to.include(\"email\");\r",
+									"});\r",
+									"pm.test(\"Body includes first name\", function () {\r",
+									"  pm.expect(pm.response.text()).to.include(\"firstName\");\r",
+									"});\r",
+									"pm.test(\"Body includes last name\", function () {\r",
+									"  pm.expect(pm.response.text()).to.include(\"lastName\");\r",
+									"});\r",
+									"pm.test(\"Body includes phone number\", function () {\r",
+									"  pm.expect(pm.response.text()).to.include(\"phoneNumber\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"_postman_id": "aefd8874-3481-44d0-8893-b39531290d06",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "uvjqzm5xl6bw"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"secretKey\": \"hfucj5jatq8h\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseurl}}/self/users"
+					},
+					"response": []
+				}
+			],
+			"_postman_id": "0fba98df-6333-401e-aa2b-902c1ffedfd0"
+		},
+		{
+			"name": "Wallets API",
+			"item": [
+				{
+					"name": "Debit",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Response time is less than 400ms\", () => {\r",
+									"  pm.expect(pm.response.responseTime).to.be.below(400);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response property matches Transaction Reference\", function () {\r",
+									"  pm.expect(pm.response.json().name).to.eql(pm.environment.get(\"2716707355\"));\r",
+									"});\r",
+									"pm.test(\"Response property matches amount\", function () {\r",
+									"  pm.expect(pm.response.json().name).to.eql(pm.environment.get(\"50\"));\r",
+									"});\r",
+									"pm.test(\"Response property matches phone Number\", function () {\r",
+									"  pm.expect(pm.response.json().name).to.eql(pm.environment.get(\"08057998539\"));\r",
+									"});\r",
+									"pm.test(\"Response property matches secret Key\", function () {\r",
+									"  pm.expect(pm.response.json().name).to.eql(pm.environment.get(\"hfucj5jatq8h\"));\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"id": "7ed0f6c0-7d1f-4ae5-9b25-548128ec63be"
+							}
+						}
+					],
+					"_postman_id": "79dd24f3-462d-42d3-bd5a-544bc6433ff3",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "uvjqzm5xl6bw"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"transactionReference\": \"2716707355\",\r\n  \"amount\": 50.0,\r\n  \"phoneNumber\": \"08057998539\",\r\n  \"secretKey\": \"hfucj5jatq8h\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseurl}}/wallet/debit"
+					},
+					"response": []
+				},
+				{
+					"name": "Credit",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Response time is less than 400ms\", () => {\r",
+									"  pm.expect(pm.response.responseTime).to.be.below(400);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response property matches transaction Reference\", function () {\r",
+									"  pm.expect(pm.response.json().name).to.eql(pm.environment.get(\"2716707352\"));\r",
+									"});\r",
+									"pm.test(\"Response property matches amount\", function () {\r",
+									"  pm.expect(pm.response.json().name).to.eql(pm.environment.get(\"1000\"));\r",
+									"});\r",
+									"pm.test(\"Response property matches phone Number\", function () {\r",
+									"  pm.expect(pm.response.json().name).to.eql(pm.environment.get(\"08057998539\"));\r",
+									"});\r",
+									"pm.test(\"Response property matches Secret Key\", function () {\r",
+									"  pm.expect(pm.response.json().name).to.eql(pm.environment.get(\"hfucj5jatq8h\"));\r",
+									"});\r",
+									"pm.test(\"Body includes amount credited\", function () {\r",
+									"  pm.expect(pm.response.text()).to.include(\"amountCredited\");\r",
+									"});\r",
+									"pm.test(\"Body includes recipient wallet balance\", function () {\r",
+									"  pm.expect(pm.response.text()).to.include(\"recipientWalletBalance\");\r",
+									"});\r",
+									"pm.test(\"Body includes sender Wallet Balance\", function () {\r",
+									"  pm.expect(pm.response.text()).to.include(\"senderWalletBalance\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"id": "389e5dca-6ae6-47a0-8ee7-5d214abdd805"
+							}
+						}
+					],
+					"_postman_id": "97957416-021b-4ec7-9f56-0b592c5e6f17",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "uvjqzm5xl6bw"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"transactionReference\": \"2716707352\",\r\n  \"amount\": 1000.0,\r\n  \"phoneNumber\": \"08057998539\",\r\n  \"secretKey\": \"hfucj5jatq8h\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseurl}}/wallet/credit"
+					},
+					"response": []
+				},
+				{
+					"name": "Generate",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Response time is less than 400ms\", () => {\r",
+									"  pm.expect(pm.response.responseTime).to.be.below(400);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response property matches first Name\", function () {\r",
+									"  pm.expect(pm.response.json().name).to.eql(pm.environment.get(\"King\"));\r",
+									"});\r",
+									"pm.test(\"Response property matches last Name\", function () {\r",
+									"  pm.expect(pm.response.json().name).to.eql(pm.environment.get(\"Pharoah\"));\r",
+									"});\r",
+									"pm.test(\"Response property matches Bvn\", function () {\r",
+									"  pm.expect(pm.response.json().name).to.eql(pm.environment.get(\"222\"));\r",
+									"});\r",
+									"pm.test(\"Response property matches email\", function () {\r",
+									"  pm.expect(pm.response.json().name).to.eql(pm.environment.get(\"Pharoah@egypt.com\"));\r",
+									"});\r",
+									"pm.test(\"Response property matches Secret Key\", function () {\r",
+									"  pm.expect(pm.response.json().name).to.eql(pm.environment.get(\"hfucj5jatq8h\"));\r",
+									"});\r",
+									"pm.test(\"Response property matches date Of Birth\", function () {\r",
+									"  pm.expect(pm.response.json().name).to.eql(pm.environment.get(\"1945-01-12\"));\r",
+									"});\r",
+									"pm.test(\"Response property matches date Of currency\", function () {\r",
+									"  pm.expect(pm.response.json().name).to.eql(pm.environment.get(\"NGN\"));\r",
+									"});\r",
+									"pm.test(\"Body includes data\", function () {\r",
+									"  pm.expect(pm.response.text()).to.include(\"data\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"id": "741ffd94-58d5-4235-abd4-4db79c2508eb"
+							}
+						}
+					],
+					"_postman_id": "c5d0f9a2-c1b5-440c-81ae-20c1d6c52a9c",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "uvjqzm5xl6bw"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"firstName\": \"King\",\r\n  \"lastName\": \"Pharoah\",\r\n  \"Bvn\":\"222\",\r\n  \"email\": \"Pharoah@egypt.com\",\r\n  \"secretKey\": \"hfucj5jatq8h\",\r\n  \"dateOfBirth\": \"1945-01-12\",\r\n  \"currency\": \"NGN\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseurl}}/wallet/generate"
+					},
+					"response": []
+				},
+				{
+					"name": "RetrieveAccountNumber",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Response time is less than 400ms\", () => {\r",
+									"  pm.expect(pm.response.responseTime).to.be.below(400);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response property matches phone Number\", function () {\r",
+									"  pm.expect(pm.response.json().name).to.eql(pm.environment.get(\"2348148657415\"));\r",
+									"});\r",
+									"pm.test(\"Response property matches Secret Key\", function () {\r",
+									"  pm.expect(pm.response.json().name).to.eql(pm.environment.get(\"hfucj5jatq8h\"));\r",
+									"});\r",
+									"pm.test(\"Body includes data\", function () {\r",
+									"  pm.expect(pm.response.text()).to.include(\"data\");\r",
+									"});\r",
+									"pm.test(\"Body includes User ID\", function () {\r",
+									"  pm.expect(pm.response.text()).to.include(\"userId\");\r",
+									"});\r",
+									"pm.test(\"Body includes bank\", function () {\r",
+									"  pm.expect(pm.response.text()).to.include(\"bank\");\r",
+									"});\r",
+									"pm.test(\"Body includes account number\", function () {\r",
+									"  pm.expect(pm.response.text()).to.include(\"accountNumber\");\r",
+									"});\r",
+									"pm.test(\"Body includes account name\", function () {\r",
+									"  pm.expect(pm.response.text()).to.include(\"accountName\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"id": "c9eba3cb-990a-4d41-802c-0734651b0ecb"
+							}
+						}
+					],
+					"_postman_id": "688fbf1f-875e-49c4-b9ec-18c6e5756902",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "uvjqzm5xl6bw"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"phoneNumber\": \"2348148657415\",\r\n  \"secretKey\": \"hfucj5jatq8h\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseurl}}/wallet/nuban"
+					},
+					"response": []
+				},
+				{
+					"name": "Set Password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Response time is less than 400ms\", () => {\r",
+									"  pm.expect(pm.response.responseTime).to.be.below(400);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response property matches phone Number\", function () {\r",
+									"  pm.expect(pm.response.json().name).to.eql(pm.environment.get(\"13990205533\"));\r",
+									"});\r",
+									"pm.test(\"Response property matches password\", function () {\r",
+									"  pm.expect(pm.response.json().name).to.eql(pm.environment.get(\"p1ert0tuml0c0m0t0r\"));\r",
+									"});\r",
+									"pm.test(\"Response property matches Secret Key\", function () {\r",
+									"  pm.expect(pm.response.json().name).to.eql(pm.environment.get(\"hfucj5jatq8h\"));\r",
+									"});\r",
+									"pm.test(\"Body includes message\", function () {\r",
+									"  pm.expect(pm.response.text()).to.include(\"message\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"id": "9154863d-3b96-47d2-bcef-086e33ac1e89"
+							}
+						}
+					],
+					"_postman_id": "27c99ddf-4ba1-44a4-856b-843a381153d4",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "uvjqzm5xl6bw"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"phoneNumber\": \"13990205533\",\r\n  \"password\": \"p1ert0tuml0c0m0t0r\",\r\n  \"secretKey\": \"hfucj5jatq8h\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseurl}}/wallet/password"
+					},
+					"response": []
+				},
+				{
+					"name": "Set Pin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Response time is less than 200ms\", () => {\r",
+									"  pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response property matches phone Number\", function () {\r",
+									"  pm.expect(pm.response.json().name).to.eql(pm.environment.get(\"08057998539\"));\r",
+									"});\r",
+									"pm.test(\"Response property matches transaction Pin\", function () {\r",
+									"  pm.expect(pm.response.json().name).to.eql(pm.environment.get(\"9999\"));\r",
+									"});\r",
+									"pm.test(\"Response property matches Secret Key\", function () {\r",
+									"  pm.expect(pm.response.json().name).to.eql(pm.environment.get(\"hfucj5jatq8h\"));\r",
+									"});\r",
+									"pm.test(\"Body includes message\", function () {\r",
+									"  pm.expect(pm.response.text()).to.include(\"message\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"id": "8c256bd2-9a19-48a2-a66a-0dacd907ae2d"
+							}
+						}
+					],
+					"_postman_id": "a68c53d9-ef58-4100-a5ff-58b083a56256",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "uvjqzm5xl6bw"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"phoneNumber\": \"08057998539\",\r\n  \"transactionPin\": \"9999\",\r\n  \"secretKey\": \"hfucj5jatq8h\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseurl}}/wallet/pin"
+					},
+					"response": []
+				},
+				{
+					"name": "Transactions",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Response time is less than 400ms\", () => {\r",
+									"  pm.expect(pm.response.responseTime).to.be.below(400);\r",
+									"});\r",
+									"pm.test(\"Body includes data\", function () {\r",
+									"  pm.expect(pm.response.text()).to.include(\"data\");\r",
+									"});\r",
+									"pm.test(\"Body includes data\", function () {\r",
+									"  pm.expect(pm.response.text()).to.include(\"data\");\r",
+									"});\r",
+									"pm.test(\"Body includes amount\", function () {\r",
+									"  pm.expect(pm.response.text()).to.include(\"amount\");\r",
+									"});\r",
+									"pm.test(\"Body includes currency\", function () {\r",
+									"  pm.expect(pm.response.text()).to.include(\"currency\");\r",
+									"});\r",
+									"pm.test(\"Body includes category\", function () {\r",
+									"  pm.expect(pm.response.text()).to.include(\"category\");\r",
+									"});\r",
+									"pm.test(\"Body includes narration\", function () {\r",
+									"  pm.expect(pm.response.text()).to.include(\"narration\");\r",
+									"});\r",
+									"pm.test(\"Body includes date transacted\", function () {\r",
+									"  pm.expect(pm.response.text()).to.include(\"dateTransacted\");\r",
+									"});\r",
+									"pm.test(\"Body includes previous balance\", function () {\r",
+									"  pm.expect(pm.response.text()).to.include(\"previousBalance\");\r",
+									"});\r",
+									"pm.test(\"Body includes new Balance\", function () {\r",
+									"  pm.expect(pm.response.text()).to.include(\"newBalance\");\r",
+									"});\r",
+									"pm.test(\"Body includes type\", function () {\r",
+									"  pm.expect(pm.response.text()).to.include(\"type\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"id": "be37b8a7-d8b8-4b93-b8a0-f0b0cbe15a32"
+							}
+						}
+					],
+					"_postman_id": "6d5a60c3-7178-4737-a59a-0a7a17fec1a6",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "uvjqzm5xl6bw"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"skip\": 0,\r\n  \"take\": 10,\r\n  \"dateFrom\": \"2019-01-15\",\r\n  \"dateTo\": \"2021-01-15\",\r\n  \"transactionType\": 1,\r\n  \"phoneNumber\": \"08057998539\",\r\n  \"transactionPin\": \"9999\",\r\n  \"currency\": \"NGN\",\r\n  \"secretKey\": \"hfucj5jatq8h\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseurl}}/wallet/transactions"
+					},
+					"response": []
+				},
+				{
+					"name": "Get User By Phone No.",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Response time is less than 400ms\", () => {\r",
+									"  pm.expect(pm.response.responseTime).to.be.below(400);\r",
+									"});\r",
+									"pm.test(\"Body includes data\", function () {\r",
+									"  pm.expect(pm.response.text()).to.include(\"data\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"id": "e24afec3-6eec-41d0-9304-6a477b820139"
+							}
+						}
+					],
+					"_postman_id": "ee2aacb0-b842-44ca-866a-31a5de6df1bb",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "uvjqzm5xl6bw"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"phoneNumber\": \"08023634895\",\r\n  \"secretKey\": \"hfucj5jatq8h\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseurl}}/wallet/getuser"
+					},
+					"response": []
+				},
+				{
+					"name": "Get User By Email",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Response time is less than 400ms\", () => {\r",
+									"  pm.expect(pm.response.responseTime).to.be.below(400);\r",
+									"});\r",
+									"pm.test(\"Body includes data\", function () {\r",
+									"  pm.expect(pm.response.text()).to.include(\"data\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"id": "10868c39-1590-42b4-a8fd-03b7cf4e0a4d"
+							}
+						}
+					],
+					"_postman_id": "a6628c7f-b832-4496-9819-fb64ce480e8e",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "uvjqzm5xl6bw"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"Sadiqumar742@gmail.com\",\r\n    \"secretKey\": \"hfucj5jatq8h\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseurl}}/wallet/getuser"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Balance",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Response time is less than 400ms\", () => {\r",
+									"  pm.expect(pm.response.responseTime).to.be.below(400);\r",
+									"});\r",
+									"pm.test(\"Body includes data\", function () {\r",
+									"  pm.expect(pm.response.text()).to.include(\"data\");\r",
+									"});\r",
+									"pm.test(\"Body includes wallet balance\", function () {\r",
+									"  pm.expect(pm.response.text()).to.include(\"walletBalance\");\r",
+									"});\r",
+									"pm.test(\"Body includes wallet currency\", function () {\r",
+									"  pm.expect(pm.response.text()).to.include(\"walletCurrency\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"id": "18a7e099-61ed-441f-931e-f02ea8516d1c"
+							}
+						}
+					],
+					"_postman_id": "dd18dc34-1d11-4acd-81d0-689138b28f17",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "uvjqzm5xl6bw"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"phoneNumber\": \"2344049658848\",\r\n  \"currency\": \"NGN\",\r\n  \"secretKey\": \"hfucj5jatq8h\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseurl}}/wallet/balance"
+					},
+					"response": []
+				},
+				{
+					"name": "Update BVN",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Response time is less than 400ms\", () => {\r",
+									"  pm.expect(pm.response.responseTime).to.be.below(400);\r",
+									"});\r",
+									"pm.test(\"Body includes data\", function () {\r",
+									"  pm.expect(pm.response.text()).to.include(\"data\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"id": "20e21f47-4522-482e-9305-dfb5d09e93f6"
+							}
+						}
+					],
+					"_postman_id": "c0bf6632-ac10-4a7f-9dd9-c4a3a5e62f11",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "uvjqzm5xl6bw"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"FirstName\":\"Jon\",\r\n     \"LastName\":\"Spy\",\r\n    \"Bvn\":\"22231485915\",\r\n    \"PhoneNumber\":\"2346134728127\",\r\n    \"Email\":\"Jon@spy.com\",\r\n    \"DateOfBirth\" : \"18-03-1981\",\r\n    \"SecretKey\":\"hfucj5jatq8h\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseurl}}/wallet/updatebvn"
+					},
+					"response": []
+				}
+			],
+			"_postman_id": "48131b14-af7e-4639-a811-83e5e6c0afc5"
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				],
+				"id": "fa128cae-dccc-4a87-aed0-b23a7f55dc51"
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				],
+				"id": "76f34c30-059b-4e3c-b663-d97831c21f6d"
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "3b7a4b55-16c0-43d6-8f8f-9747c0f8ae04",
+			"key": "baseurl",
+			"value": "https://sandbox.wallets.africa",
+			"type": "string"
+		},
+		{
+			"id": "097abb24-982b-465e-9bc5-880c4c07645e",
+			"key": "baseUrl",
+			"value": "https://sandbox.wallets.africa",
+			"type": "string"
+		}
+	]
+}
